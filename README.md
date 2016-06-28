@@ -56,11 +56,15 @@ Note: The script deletes all existing files in ~/jenkins
 ### Swampdragon
 The swampdragon fabric script installs swampdragon with the tutorial 1 of the official swampdragon page. Before running this script, run the Django one click installer in the control panel.
 To set basic configuration parameters, enter the following commands and replace the values of the variables.
-    export PROJECT_NAME=(enter the name of your project here)
-    export SD_HOST=(enter the domain name of the website)
-    export SD_PORT=(enter the remote port)
-    export REDIS_PORT=(enter the local port of redis)
+``` bash
+export PROJECT_NAME=(enter the name of your project here)
+export SD_HOST=(enter the domain name of the website)
+export SD_PORT=(enter the remote port)
+export REDIS_PORT=(enter the local port of redis)
+```
 
 Run the fabric script
-    fab -H localhost install_swampdragon:project=$PROJECT_NAME,sd_host=$SD_HOST,sd_port=$SD_PORT,redis_port=$REDIS_PORT
+``` bash
+fab -H localhost install_swampdragon:project=$PROJECT_NAME,sd_host=$SD_HOST,sd_port=$SD_PORT,redis_port=$REDIS_PORT
+```
 
