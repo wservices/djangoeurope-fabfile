@@ -19,6 +19,10 @@ Download our fabric package in the directory ~/fabric.
 Run the following command to download and update ~/fabfile (last update: 25.05.2016).
 	wget -O - https://templates.wservices.ch/install_fab_packages.sh | sh
 
+Or download from git repository
+	git clone https://github.com/wservices/djangoeurope-fabfile ~/djangoeurope-fabfile
+	ln -s ~/djangoeurope-fabfile/fabfile ~/fabfile
+
 
 ## General advice
 For the most installations you need to create a local port in the djangoeurope control panel first. Make sure that you only open ports which has been added in the control panel. Applications which list on wrong ports will not be accessible.
