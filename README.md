@@ -17,11 +17,15 @@ Available installers
 ## Install
 Download our fabric package in the directory ~/fabric.
 Run the following command to download and update ~/fabfile (last update: 25.05.2016).
-    wget -O - https://templates.wservices.ch/install_fab_packages.sh | sh
+``` bash
+wget -O - https://templates.wservices.ch/install_fab_packages.sh | sh
+```
 
 Or download from git repository
-    git clone https://github.com/wservices/djangoeurope-fabfile ~/djangoeurope-fabfile
-    ln -s ~/djangoeurope-fabfile/fabfile ~/fabfile
+``` bash
+git clone https://github.com/wservices/djangoeurope-fabfile ~/djangoeurope-fabfile
+ln -s ~/djangoeurope-fabfile/fabfile ~/fabfile
+```
 
 
 ## General advice
@@ -30,27 +34,27 @@ For the most installations you need to create a local port in the djangoeurope c
 
 ## Installer
 ### MongoDB
-    fab -H localhost install_mongodb:version="3.2.6":port=(insert the local port number here)
+    fab -H localhost install_mongodb:version="3.2.8":port=(insert the local port number here)
 
 Note: The script deletes all existing files in ~/mongodb except of ~/mongodb/data
 
 
 ### Redis
-    fab -H localhost install_redis:version='3.2.0':port=(insert the local port number here)
+    fab -H localhost install_redis:version='3.2.3':port=(insert the local port number here)
 
 Note: The script deletes all existing files in ~/redis except of ~/redis/db
 
 
 ### Elasticsearch
-    fab -H localhost install_redis:version='2.3.3':port=(insert the local port number here)
+    fab -H localhost install_redis:version='2.3.5':port=(insert the local port number here)
 
 Note: The script deletes all existing files in ~/elasticsearch. To run elasticsearch the Premium plan is required.
 
 
 ### Jenkins
-    fab -H localhost install_redis:version='2.6':port=(insert the local port number here)
+    fab -H localhost install_redis:version='2.16':port=(insert the local port number here)
 
-Note: The script deletes all existing files in ~/jenkins
+Note: The script deletes all existing files in ~/jenkins. The Premium plan is required.
 
 
 ### Swampdragon
@@ -68,3 +72,4 @@ Run the fabric script
 fab -H localhost install_swampdragon:project=$PROJECT_NAME,sd_host=$SD_HOST,sd_port=$SD_PORT,redis_port=$REDIS_PORT
 ```
 
+Note: The development of the swampdragon project is currently on hold.
