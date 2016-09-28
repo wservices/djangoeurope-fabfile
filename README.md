@@ -12,6 +12,7 @@ Available installers
 * Elasticsearch
 * Jenkins
 * Swamdragon
+* lighttpd + fastcgi
 
 
 ## Install
@@ -73,3 +74,21 @@ fab -H localhost install_swampdragon:project=$PROJECT_NAME,sd_host=$SD_HOST,sd_p
 ```
 
 Note: The development of the swampdragon project is currently on hold.
+
+
+### lighttpd
+``` bash
+fab -H localhost install_lighttpd:port=(insert the local port number here)
+```
+
+Note: lighttpd + FastCGI support has been removed in Django 1.9. The installer overrides the files ~/lighttpd/django.conf and ~/lighttpd/port.conf.
+
+
+### fastcgi
+The fastcgi fabric script creates the init script ~/init/projectname and configures lighttpd (~/lighttpd/django.conf). The Django project must exists within the directory ~/projectname.
+``` bash
+fab -H localhost install_fastcgi:projectname=(insert the projectname here),hostname=(enter your domain for this Django project)
+```
+
+Note: The installer overrides ~/init/projectname with a fastcgi startup script.
+

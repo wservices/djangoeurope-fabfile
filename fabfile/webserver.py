@@ -22,11 +22,34 @@ def install_nginx(*args, **kwargs):
 
     run('mkdir -p ~/init')
     if not exists('~/init/nginx'):
-        run('wget http://https://templates.wservices.ch/nginx/init -O ~/init/nginx')
+        run('wget https://templates.wservices.ch/nginx/init -O ~/init/nginx')
         run('chmod 750 ~/init/nginx')
 
     if exists('~/nginx/nginx.pid'):
         run('~/init/nginx restart')
     else:
         run('~/init/nginx start')
+
+
+def install_lighttpd(*args, **kwargs):
+    home = run('echo $HOME')
+    lighttpd_dir = os.path.join(home, 'lighttpd')
+    lighttpd_port = kwargs.get('port')
+
+    run('mkdir -p %s' % lighttpd_dir)
+    run('wget https://templates.wservices.ch/lighttpd/lighttpd.conf -O %s' % (os.path.join(lighttpd_dir, 'lighttpd.conf')))
+    run('wget https://templates.wservices.ch/lighttpd/port.conf -O %s' % (os.path.join(lighttpd_dir, 'port.conf')))
+    append(os.path.join(lighttpd_dir, 'port.conf'), 'server.port = %s' % lighttpd_port)
+    if not exists(os.path.join(lighttpd_dir, 'django.conf')):
+        run('wget https://templates.wservices.ch/lighttpd/django.conf -O %s' % (os.path.join(lighttpd_dir, 'django.conf')))
+
+    run('mkdir -p ~/init')
+    if not exists('~/init/lighttpd'):
+        run('wget https://templates.wservices.ch/lighttpd/init -O ~/init/lighttpd')
+        run('chmod 750 ~/init/lighttpd')
+
+    if exists('~/lighttpd/lighttpd.pid'):
+        run('~/init/lighttpd restart')
+    else:
+        run('~/init/lighttpd start')
 

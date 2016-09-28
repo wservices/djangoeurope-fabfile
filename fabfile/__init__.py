@@ -7,3 +7,4 @@ from .php import *
 from .jenkins import *
 from .swampdragon import *
 from .webserver import *
+from .stack import *
