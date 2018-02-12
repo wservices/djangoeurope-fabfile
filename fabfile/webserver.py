@@ -23,7 +23,7 @@ def install_nginx(*args, **kwargs):
 
     run('mkdir -p ~/init')
     if not exists('~/init/nginx'):
-        run('wget https://templates.wservices.ch/nginx/init -O ~/init/nginx')
+        run('wget https://templates.wservices.ch/nginx/nginx.init -O ~/init/nginx')
         run('chmod 750 ~/init/nginx')
 
     if exists('~/nginx/nginx.pid'):
