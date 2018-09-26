@@ -10,14 +10,18 @@ from .misc import setup_supervisord
 
 
 def install_elasticsearch(*args, **kwargs):
-    VERSION = kwargs.get('version', '2.3.3')
-    port = kwargs.get('port')
-    if not port:
-        print('Enter a local port for the elasticsearch server')
+    VERSION = kwargs.get('version', '6.4.1')
+    http_port = kwargs.get('http_port')
+    if not http_port:
+        print('Enter a local http port for the elasticsearch server')
+        return 1
+    transport_port = kwargs.get('transport_port')
+    if not transport_port:
+        print('Enter a local transport port for the elasticsearch server')
         return 1
     if not exists('elasticsearch-%s.tar.gz' % VERSION):
         with hide('output'):
-            run('wget https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/%s/elasticsearch-%s.tar.gz' % (VERSION, VERSION))
+            run('wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz' % VERSION)
     if exists('elasticsearch'):
         if exists('supervisor'):
             with cd('supervisor'):
@@ -46,13 +50,14 @@ def install_elasticsearch(*args, **kwargs):
     home = run('echo $HOME')
     base_dir = os.path.join(home, 'elasticsearch')
     base_conf = [
-        'http.port: %s' % port,
+        'http.port: %s' % http_port,
+        'transport.tcp.port: %s' % transport_port,
     ]
     spec_conf = [
         'network.host: 127.0.0.1',
-        'node.local: True',
-        'index.number_of_shards: 1',
-        'index.number_of_replicas: 0',
+        #'node.local: True',
+        #'index.number_of_shards: 1',
+        #'index.number_of_replicas: 0',
     ]
 
     load_config(

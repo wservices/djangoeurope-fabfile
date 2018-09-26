@@ -47,7 +47,7 @@ Note: The script deletes all existing files in ~/redis except of ~/redis/db
 
 
 ### Elasticsearch
-    fab -H localhost install_elasticsearch:version='2.3.5',port=(insert the local port number here)
+    fab -H localhost install_elasticsearch:version='6.4.1',http_port=(insert the local port number here),transport_port=(insert a 2nd local port number here)
 
 Note: The script deletes all existing files in ~/elasticsearch. To run elasticsearch the Premium plan is required.
 
