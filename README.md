@@ -35,13 +35,13 @@ For the most installations you need to create a local port in the djangoeurope c
 
 ## Installer
 ### MongoDB
-    fab -H localhost install_mongodb:version="3.2.8",port=(insert the local port number here)
+    fab -H localhost install_mongodb:version="4.0.3",port=(insert the local port number here)
 
 Note: The script deletes all existing files in ~/mongodb except of ~/mongodb/data
 
 
 ### Redis
-    fab -H localhost install_redis:version='3.2.3',port=(insert the local port number here)
+    fab -H localhost install_redis:version='5.0.0',port=(insert the local port number here)
 
 Note: The script deletes all existing files in ~/redis except of ~/redis/db
 
@@ -49,13 +49,13 @@ Note: The script deletes all existing files in ~/redis except of ~/redis/db
 ### Elasticsearch
     fab -H localhost install_elasticsearch:version='6.4.1',http_port=(insert the local port number here),transport_port=(insert a 2nd local port number here)
 
-Note: The script deletes all existing files in ~/elasticsearch. To run elasticsearch the Premium plan is required.
+Note: The script deletes all existing files in ~/elasticsearch. 1GB RAM and 100 processes (nproc limit) is required.
 
 
 ### Jenkins
     fab -H localhost install_jenkins:version='latest',port=(insert the local port number here)
 
-Note: The script deletes all existing files in ~/jenkins. The Premium plan is required.
+Note: The script deletes all existing files in ~/jenkins. 1GB RAM and 100 processes (nproc limit) is required.
 
 
 ### Swampdragon

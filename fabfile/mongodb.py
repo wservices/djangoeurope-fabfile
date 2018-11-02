@@ -10,7 +10,7 @@ from .misc import setup_supervisord
 
 
 def install_mongodb(*args, **kwargs):
-    version = kwargs.get('version') or '3.2.6'
+    version = kwargs.get('version') or '4.0.3'
     home = run('echo $HOME')
     port = kwargs.get('port')
     base_dir = kwargs.get('base_dir') or os.path.join(home, 'mongodb')
@@ -33,6 +33,7 @@ def install_mongodb(*args, **kwargs):
     if LONG_BIT == '64':
         package_name = 'mongodb-linux-x86_64-%s.tgz' % version
     else:
+        version = '3.2.20' # latest version which supports 32bit
         package_name = 'mongodb-linux-i686-%s.tgz' % version
 
     package_path = os.path.join(home, package_name)
@@ -55,8 +56,10 @@ def install_mongodb(*args, **kwargs):
         'bind_ip = 127.0.0.1',
         'logappend = True',
         'journal = true',
-        'nohttpinterface = true',
     ]
+
+    if version.startswith('3.'):
+        spec_conf.append('nohttpinterface = true')
 
     load_config(
             os.path.join(base_dir, 'mongodb.conf'),

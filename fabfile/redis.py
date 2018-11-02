@@ -1,6 +1,7 @@
 import os, re
 
 from fabric.api import hide, run
+from fabric.context_managers import cd
 from fabric.contrib.files import append, exists, sed
 
 
@@ -17,6 +18,7 @@ def redis_status(*args, **kwargs):
 def install_redis(*args, **kwargs):
     port = kwargs.get('port') or 0 # disable TCP port listening by default, use unix sockets (faster).
     home = run('echo $HOME')
+    version = kwargs.get('version')
     redis_base_dir = os.path.join(home, 'redis')
     redis_conf_file = os.path.join(redis_base_dir, 'redis.conf')
     redis_conf_order = [
@@ -54,6 +56,14 @@ def install_redis(*args, **kwargs):
 
     if not exists(redis_base_dir):
         run('mkdir ' + redis_base_dir)
+
+    if version:
+        run('wget http://download.redis.io/releases/redis-{0}.tar.gz -O redis-{0}.tar.gz'.format(version))
+        run('tar xzf redis-{0}.tar.gz'.format(version))
+        with cd(os.path.join(home, 'redis-{0}'.format(version))):
+            run('make')
+            run('make PREFIX={0} install'.format(redis_base_dir))
+
     if exists(redis_conf_file):
         restart = True
         with hide('output'):
@@ -73,7 +83,7 @@ def install_redis(*args, **kwargs):
                     continue # Do not override already existing specific configurations
                 print('%s %s change to %s' % (param, orig_value, value))
                 print('group 0: %s' % orig_line)
-                sed(redis_conf_file, orig_line, '%s %s' % (param, value))
+                sed(redis_conf_file, orig_line, '%s %s' % (param, value), backup='')
             else:
                 print('Config OK: %s %s' % (param, value))
         else:
@@ -83,6 +93,10 @@ def install_redis(*args, **kwargs):
     with hide('output'):
         run('wget https://templates.wservices.ch/redis/redis-server -O ~/init/redis-server')
         run('chmod 755 ~/init/redis-server')
+
+    if version:
+        sed('~/init/redis-server', 'DAEMON=/usr/bin/redis-server', 'DAEMON=$HOME/redis/bin/redis-server', backup='')
+
     if restart:
         run('~/init/redis-server restart')
     else:
