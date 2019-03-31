@@ -10,7 +10,7 @@ from .misc import setup_supervisord
 
 
 def install_elasticsearch(*args, **kwargs):
-    VERSION = kwargs.get('version', '6.4.1')
+    VERSION = kwargs.get('version', '6.7.0')
     http_port = kwargs.get('http_port')
     if not http_port:
         print('Enter a local http port for the elasticsearch server')

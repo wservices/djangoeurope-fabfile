@@ -11,69 +11,60 @@ Available installers
 * Redis
 * Elasticsearch
 * Jenkins
-* Swamdragon
+* apache2
 * lighttpd + fastcgi
 
 
 ## Install
-Download our fabric package in the directory ~/fabric.
-Run the following command to download and update ~/fabfile (last update: 25.05.2016).
-``` bash
-wget -O - https://templates.wservices.ch/install_fab_packages.sh | sh
-```
-
-Or download from git repository
-``` bash
+Download our fabric package and create a symlink:
+```bash
 git clone https://github.com/wservices/djangoeurope-fabfile ~/djangoeurope-fabfile
 ln -s ~/djangoeurope-fabfile/fabfile ~/fabfile
 ```
 
 
 ## General advice
-For the most installations you need to create a local port in the djangoeurope control panel first. Make sure that you only open ports which has been added in the control panel. Applications which list on wrong ports will not be accessible.
+For the most installations, you need to create a local port in the djangoeurope control panel first. Make sure that you only open ports which have been added in the control panel. Applications which list on wrong ports are not accessible.
+It installs an init script (~/init/appname) to start/stop/restart the application. As an example, you can restart MongoDB by entering '~/init/mongodb restart'.
 
 
 ## Installer
 ### MongoDB
-    fab -H localhost install_mongodb:version="4.0.3",port=(insert the local port number here)
+```bash
+fab -H localhost install_mongodb:version="4.0.8",port=(insert the local port number here)
+```
 
 Note: The script deletes all existing files in ~/mongodb except of ~/mongodb/data
 
 
 ### Redis
-    fab -H localhost install_redis:version='5.0.0',port=(insert the local port number here)
+```bash
+fab -H localhost install_redis:version='5.0.4',port=(insert the local port number here)
+```
 
 Note: The script deletes all existing files in ~/redis except of ~/redis/db
 
 
 ### Elasticsearch
-    fab -H localhost install_elasticsearch:version='6.4.1',http_port=(insert the local port number here),transport_port=(insert a 2nd local port number here)
+```bash
+fab -H localhost install_elasticsearch:version='6.7.0',http_port=(insert the local port number here),transport_port=(insert a 2nd local port number here)
+```
 
-Note: The script deletes all existing files in ~/elasticsearch. 1GB RAM and 100 processes (nproc limit) is required.
+Note: The script deletes all existing files in ~/elasticsearch. 1GB RAM and 100 processes (nproc limit) is required. supervisord will be installed and configured in the directory ~/supervisor.
 
 
 ### Jenkins
-    fab -H localhost install_jenkins:version='latest',port=(insert the local port number here)
+```bash
+fab -H localhost install_jenkins:version='latest',port=(insert the local port number here)
+```
 
 Note: The script deletes all existing files in ~/jenkins. 1GB RAM and 100 processes (nproc limit) is required.
 
 
-### Swampdragon
-The swampdragon fabric script installs swampdragon with the tutorial 1 of the official swampdragon page. Before running this script, run the Django one click installer in the control panel.
-To set basic configuration parameters, enter the following commands and replace the values of the variables.
+### apache2
 ``` bash
-export PROJECT_NAME=(enter the name of your project here)
-export SD_HOST=(enter the domain name of the website)
-export SD_PORT=(enter the remote port)
-export REDIS_PORT=(enter the local port of redis)
+fab -H localhost install_apache2:version='2.4.39',port=(insert the local port number here)
 ```
-
-Run the fabric script
-``` bash
-fab -H localhost install_swampdragon:project=$PROJECT_NAME,sd_host=$SD_HOST,sd_port=$SD_PORT,redis_port=$REDIS_PORT
-```
-
-Note: The development of the swampdragon project is currently on hold.
 
 
 ### lighttpd
@@ -85,7 +76,7 @@ Note: lighttpd + FastCGI support has been removed in Django 1.9. The installer o
 
 
 ### fastcgi
-The fastcgi fabric script creates the init script ~/init/projectname and configures lighttpd (~/lighttpd/django.conf). The Django project must exists within the directory ~/projectname.
+The fastcgi fabric script creates the init script $HOME/init/projectname and configures lighttpd ($HOME/lighttpd/django.conf). The Django project must exists within the directory $HOME/projectname.
 ``` bash
 fab -H localhost install_fastcgi:projectname=(insert the projectname here),hostname=(enter your domain for this Django project)
 ```

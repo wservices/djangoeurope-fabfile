@@ -1,4 +1,5 @@
 import os, re
+from pkg_resources import parse_version
 
 from fabric.api import hide, run, put, prompt
 from fabric.operations import get
@@ -10,7 +11,7 @@ from .misc import setup_supervisord
 
 
 def install_mongodb(*args, **kwargs):
-    version = kwargs.get('version') or '4.0.3'
+    version = kwargs.get('version') or '4.0.8'
     home = run('echo $HOME')
     port = kwargs.get('port')
     base_dir = kwargs.get('base_dir') or os.path.join(home, 'mongodb')
@@ -33,7 +34,7 @@ def install_mongodb(*args, **kwargs):
     if LONG_BIT == '64':
         package_name = 'mongodb-linux-x86_64-%s.tgz' % version
     else:
-        version = '3.2.20' # latest version which supports 32bit
+        version = '3.2.22' # latest version which supports 32bit
         package_name = 'mongodb-linux-i686-%s.tgz' % version
 
     package_path = os.path.join(home, package_name)
@@ -58,7 +59,7 @@ def install_mongodb(*args, **kwargs):
         'journal = true',
     ]
 
-    if version.startswith('3.'):
+    if parse_version(version) < parse_version('3.6'):
         spec_conf.append('nohttpinterface = true')
 
     load_config(

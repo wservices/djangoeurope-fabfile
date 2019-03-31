@@ -57,7 +57,7 @@ def install_lighttpd(*args, **kwargs):
 
 def install_apache2(*args,**kwargs):
     PORT = kwargs.get('port')
-    version = kwargs.get('version') or '2.4.29'
+    version = kwargs.get('version') or '2.4.39'
     home = run('echo $HOME')
     base_dir = os.path.join(home, 'apache2')
 
