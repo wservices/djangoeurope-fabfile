@@ -47,7 +47,7 @@ Note: The script deletes all existing files in ~/redis except of ~/redis/db
 
 ### Elasticsearch
 ```bash
-fab -H localhost install_elasticsearch:version='6.7.0',http_port=(insert the local port number here),transport_port=(insert a 2nd local port number here)
+fab -H localhost install_elasticsearch:version='7.5.0',http_port=(insert the local port number here),transport_port=(insert a 2nd local port number here)
 ```
 
 Note: The script deletes all existing files in ~/elasticsearch. 1GB RAM and 100 processes (nproc limit) is required. supervisord will be installed and configured in the directory ~/supervisor.

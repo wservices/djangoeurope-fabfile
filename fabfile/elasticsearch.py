@@ -1,4 +1,5 @@
 import os, re
+from pkg_resources import parse_version
 
 from fabric.api import hide, run, put, prompt
 from fabric.operations import get
@@ -10,7 +11,7 @@ from .misc import setup_supervisord
 
 
 def install_elasticsearch(*args, **kwargs):
-    VERSION = kwargs.get('version', '6.7.0')
+    VERSION = kwargs.get('version', '7.5.0')
     http_port = kwargs.get('http_port')
     if not http_port:
         print('Enter a local http port for the elasticsearch server')
@@ -19,9 +20,13 @@ def install_elasticsearch(*args, **kwargs):
     if not transport_port:
         print('Enter a local transport port for the elasticsearch server')
         return 1
-    if not exists('elasticsearch-%s.tar.gz' % VERSION):
+    if parse_version(VERSION) >= parse_version('7.0.0'):
+        package_name = 'elasticsearch-%s-linux-x86_64.tar.gz' % VERSION
+    else:
+        package_name = 'elasticsearch-%s.tar.gz' % VERSION
+    if not exists(package_name):
         with hide('output'):
-            run('wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz' % VERSION)
+            run('wget https://artifacts.elastic.co/downloads/elasticsearch/%s' % package_name)
     if exists('elasticsearch'):
         if exists('supervisor'):
             with cd('supervisor'):
@@ -35,7 +40,7 @@ def install_elasticsearch(*args, **kwargs):
             run('mv elasticsearch/config elasticsearch_conf_bak')
         run('rm -rf elasticsearch')
 
-    run('tar xzf elasticsearch-%s.tar.gz' % VERSION)
+    run('tar xzf %s' % package_name)
     run('mv elasticsearch-%s elasticsearch' % VERSION)
 
     for bak,dst in {
