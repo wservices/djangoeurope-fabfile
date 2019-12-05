@@ -31,7 +31,7 @@ It installs an init script (~/init/appname) to start/stop/restart the applicatio
 ## Installer
 ### MongoDB
 ```bash
-fab -H localhost install_mongodb:version="4.0.8",port=(insert the local port number here)
+fab -H localhost install_mongodb:version="4.2.1",port=(insert the local port number here)
 ```
 
 Note: The script deletes all existing files in ~/mongodb except of ~/mongodb/data

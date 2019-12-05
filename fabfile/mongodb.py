@@ -11,7 +11,7 @@ from .misc import setup_supervisord
 
 
 def install_mongodb(*args, **kwargs):
-    version = kwargs.get('version') or '4.0.8'
+    version = kwargs.get('version') or '4.2.1'
     home = run('echo $HOME')
     port = kwargs.get('port')
     base_dir = kwargs.get('base_dir') or os.path.join(home, 'mongodb')
@@ -31,8 +31,18 @@ def install_mongodb(*args, **kwargs):
         run('rm -rf %s' % (base_dir))
 
     LONG_BIT = run('getconf LONG_BIT')
+    distro = ''
+    if parse_version(version) >= parse_version('4.2'):
+        distro = run('cat /etc/issue.net')
+        if distro == 'Debian GNU/Linux 9':
+            distro = 'debian9-'
+        elif distro == 'Debian GNU/Linux 10':
+            distro = 'debian10-'
+        elif LONG_BIT == '64':
+            raise ValueError('Unknown Linux distribution')
+
     if LONG_BIT == '64':
-        package_name = 'mongodb-linux-x86_64-%s.tgz' % version
+        package_name = 'mongodb-linux-x86_64-%s%s.tgz' % (distro, version)
     else:
         version = '3.2.22' # latest version which supports 32bit
         package_name = 'mongodb-linux-i686-%s.tgz' % version
