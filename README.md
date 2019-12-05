@@ -39,7 +39,7 @@ Note: The script deletes all existing files in ~/mongodb except of ~/mongodb/dat
 
 ### Redis
 ```bash
-fab -H localhost install_redis:version='5.0.4',port=(insert the local port number here)
+fab -H localhost install_redis:version='5.0.7',port=(insert the local port number here)
 ```
 
 Note: The script deletes all existing files in ~/redis except of ~/redis/db
